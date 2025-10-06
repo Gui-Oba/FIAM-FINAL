@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 
-INPUT_ROOT = Path("../GUI_FINAL/ret_parquet")
+INPUT_ROOT = Path("ret_parquet")
 OUTPUT_ROOT = Path("processed_data4")
 ID_COLS = ["gvkey", "iid", "excntry"]
 GROUP_CHOICES = [["year", "month"], ["year", "month"]]
@@ -63,7 +63,7 @@ def _coerce_month_keys(df: pd.DataFrame, month_dir: Path) -> None:
     ensure_col("month", month_val, MONTH_DTYPE)
 
 
-def main():
+def preprocess():
     month_dirs = sorted(INPUT_ROOT.glob("y=*/m=*"))
     if not month_dirs:
         print(f"No parquet files found under {INPUT_ROOT}")
@@ -133,4 +133,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    preprocess()

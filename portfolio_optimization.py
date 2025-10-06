@@ -32,7 +32,7 @@ def portfolio():
     MONTH_COL  = "month"
 
     # Market excess return file (optional; for CAPM alpha)
-    MKT_FILE   = "../data/mkt_ind.csv"
+    MKT_FILE   = "mkt_ind.csv"
 
     # Fixed half-life (months) to avoid in-sample tuning
     FIXED_HALF_LIFE = 6.0

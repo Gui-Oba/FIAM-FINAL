@@ -12,7 +12,7 @@ from xgboost import XGBRegressor
 from sklearn.model_selection import TimeSeriesSplit
 from sklearn.metrics import mean_squared_error
 
-INPUT_ROOT = Path("../processing/processed_data4")   # <- output of your cleaner
+INPUT_ROOT = Path("processed_data4")
 ID_COLS = ["gvkey", "iid", "excntry"]
 PARTITION_COLS = ["year", "month"]
 TARGET = "stock_ret"
@@ -381,15 +381,18 @@ def run_pipeline(window: TrainWindow) -> Dict[str, List[str]]:
     if stability_counts is not None:
         stability_counts.to_csv(out_dir / "stability_freq.csv")
 
+    # Write final feature list for downstream consumption
+    column_file = Path("column_names.txt")
+    column_file.write_text("\n".join(final_set) + ("\n" if final_set else ""))
+
     return {
         "after_correlation": kept_after_corr,
         "after_rank_ic": kept_after_ic,
         "final_features": final_set,
     }
 
+def feature_select():
+    run_pipeline(TrainWindow(start=(2005, 2), end=(2012, 12)))
+
 if __name__ == "__main__":
-    # Example: train window Jan 2012 – Dec 2019
-    res = run_pipeline(TrainWindow(start=(2005, 2), end=(2012lemo, 12)))
-    print("Kept after correlation:", len(res["after_correlation"]))
-    print("Kept after rank-IC:", len(res["after_rank_ic"]))
-    print("Final features:", len(res["final_features"]))
+    feature_select()
